@@ -1,0 +1,68 @@
+<mujoco model="trifinger_with_stage">
+    <compiler angle="radian" />
+    <size njmax="500" nconmax="100" />
+    <asset>
+        <mesh name="SIM__BL-Finger_Base" file="meshes/SIM__BL-Finger_Base.stl" />
+        <mesh name="SIM__BL-Finger_Proximal" file="meshes/SIM__BL-Finger_Proximal.stl" />
+        <mesh name="SIM__BL-Finger_Intermediate" file="meshes/SIM__BL-Finger_Intermediate.stl" />
+        <mesh name="SIM_BL_FINGER_TIP_LINK" file="meshes/SIM_BL_FINGER_TIP_LINK.stl" />
+        <mesh name="trifinger_table_without_border" file="meshes/trifinger_table_without_border.stl" />
+        <mesh name="high_table_boundary" file="meshes/high_table_boundary.stl" />
+    </asset>
+    <worldbody>
+	<body name="cube" pos="0.0 0.0 0.025">
+		<joint name="cube:joint" type="free" damping="0.01"></joint>
+		<geom size="0.025 0.025 0.025" type="box" condim="3" name="cube" rgba="0.5 0.5 0 1" mass="0.5"></geom>
+		<site name="cube" pos="0 0 0" size="0.02 0.02 0.02" rgba="1 0 0 1" type="sphere"></site>
+	</body>
+        <geom pos="0 0.219 0.29" type="mesh" rgba="0.6 0 0 1" mesh="SIM__BL-Finger_Base" />
+        <geom pos="0.18966 -0.1095 0.29" quat="0.5 0 0 -0.866025" type="mesh" rgba="0 0.6 0 1" mesh="SIM__BL-Finger_Base" />
+        <geom pos="-0.18966 -0.1095 0.29" quat="-0.5 0 0 -0.866025" type="mesh" rgba="0 0 0.6 1" mesh="SIM__BL-Finger_Base" />
+        <geom type="mesh" rgba="0.31 0.27 0.25 1" mesh="trifinger_table_without_border" />
+        <body name="finger_upper_link_0" pos="0 0.04 0.29">
+            <inertial pos="0 0.06 0" quat="0.707107 0.707107 0 0" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+            <joint name="finger_base_to_upper_joint_0" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5708 1.5708" />
+            <geom pos="0 -0.02695 0" type="mesh" rgba="0.6 0 0 1" mesh="SIM__BL-Finger_Proximal" />
+            <body name="finger_middle_link_0" pos="0 0 0">
+                <inertial pos="0.028 0 -0.08" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+                <joint name="finger_upper_to_middle_joint_0" pos="0 0 0" axis="-1 0 0" limited="true" range="-1.35263 4.49422" />
+                <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.6 0 0 1" mesh="SIM__BL-Finger_Intermediate" />
+                <body name="finger_lower_link_0" pos="0 0 -0.16">
+                    <inertial pos="0 0 -0.126667" mass="0.03" diaginertia="8.36667e-05 8.36667e-05 1e-06" />
+                    <joint name="finger_middle_to_lower_joint_0" pos="0 0 0" axis="1 0 0" limited="true" range="-3.00197 3.00197" />
+                    <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0.6 0 0 1" mesh="SIM_BL_FINGER_TIP_LINK" />
+                </body>
+            </body>
+        </body>
+        <body name="finger_upper_link_120" pos="0.034641 -0.02 0.29" quat="0.5 0 0 -0.866025">
+            <inertial pos="0 0.06 0" quat="0.707107 0.707107 0 0" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+            <joint name="finger_base_to_upper_joint_120" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5708 1.5708" />
+            <geom pos="0 -0.02695 0" type="mesh" rgba="0 0.6 0 1" mesh="SIM__BL-Finger_Proximal" />
+            <body name="finger_middle_link_120" pos="0 0 0">
+                <inertial pos="0.028 0 -0.08" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+                <joint name="finger_upper_to_middle_joint_120" pos="0 0 0" axis="-1 0 0" limited="true" range="-1.35263 4.49422" />
+                <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0 0.6 0 1" mesh="SIM__BL-Finger_Intermediate" />
+                <body name="finger_lower_link_120" pos="0 0 -0.16">
+                    <inertial pos="0 0 -0.126667" mass="0.03" diaginertia="8.36667e-05 8.36667e-05 1e-06" />
+                    <joint name="finger_middle_to_lower_joint_120" pos="0 0 0" axis="1 0 0" limited="true" range="-3.00197 3.00197" />
+                    <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0 0.6 0 1" mesh="SIM_BL_FINGER_TIP_LINK" />
+                </body>
+            </body>
+        </body>
+        <body name="finger_upper_link_240" pos="-0.034641 -0.02 0.29" quat="-0.5 0 0 -0.866025">
+            <inertial pos="0 0.06 0" quat="0.707107 0.707107 0 0" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+            <joint name="finger_base_to_upper_joint_240" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5708 1.5708" />
+            <geom pos="0 -0.02695 0" type="mesh" rgba="0 0 0.6 1" mesh="SIM__BL-Finger_Proximal" />
+            <body name="finger_middle_link_240" pos="0 0 0">
+                <inertial pos="0.028 0 -0.08" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
+                <joint name="finger_upper_to_middle_joint_240" pos="0 0 0" axis="-1 0 0" limited="true" range="-1.35263 4.49422" />
+                <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0 0 0.6 1" mesh="SIM__BL-Finger_Intermediate" />
+                <body name="finger_lower_link_240" pos="0 0 -0.16">
+                    <inertial pos="0 0 -0.126667" mass="0.03" diaginertia="8.36667e-05 8.36667e-05 1e-06" />
+                    <joint name="finger_middle_to_lower_joint_240" pos="0 0 0" axis="1 0 0" limited="true" range="-3.00197 3.00197" />
+                    <geom pos="0.014 0 0" quat="0.707107 0.707107 0 0" type="mesh" rgba="0 0 0.6 1" mesh="SIM_BL_FINGER_TIP_LINK" />
+                </body>
+            </body>
+        </body>
+    </worldbody>
+</mujoco>
