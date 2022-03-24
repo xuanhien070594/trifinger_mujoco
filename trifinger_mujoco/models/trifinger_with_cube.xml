@@ -10,15 +10,15 @@
         <mesh name="high_table_boundary" file="meshes/high_table_boundary.stl" />
     </asset>
     <worldbody>
-	<body name="cube" pos="0.0 0.0 0.025">
-		<joint name="cube:joint" type="free" damping="0.01"></joint>
-		<geom size="0.025 0.025 0.025" type="box" condim="3" name="cube" rgba="0.5 0.5 0 1" mass="0.5"></geom>
-		<site name="cube" pos="0 0 0" size="0.02 0.02 0.02" rgba="1 0 0 1" type="sphere"></site>
+	<body name="cube" pos="0.0 0.0 0.05">
+	  <inertial pos="0.0 0.0 0.0" mass="0.5" fullinertia="0.00020833333 0.00020833333 0.00020833333 0 0 0"/>
+          <freejoint name="cube_table"/>
+          <geom name="cube_geom" type="box" size="0.025 0.025 0.025" quat="1 0 0 0" friction="0.5 0.005 0.0001" rgba="0.5 0.5 0 1.0"  /> 
 	</body>
         <geom pos="0 0.219 0.29" type="mesh" rgba="0.6 0 0 1" mesh="SIM__BL-Finger_Base" />
         <geom pos="0.18966 -0.1095 0.29" quat="0.5 0 0 -0.866025" type="mesh" rgba="0 0.6 0 1" mesh="SIM__BL-Finger_Base" />
         <geom pos="-0.18966 -0.1095 0.29" quat="-0.5 0 0 -0.866025" type="mesh" rgba="0 0 0.6 1" mesh="SIM__BL-Finger_Base" />
-        <geom type="mesh" rgba="0.31 0.27 0.25 1" mesh="trifinger_table_without_border" />
+        <geom type="mesh" rgba="0.31 0.27 0.25 1" mesh="trifinger_table_without_border" friction="1.0 0.005 0.0001"/>
         <body name="finger_upper_link_0" pos="0 0.04 0.29">
             <inertial pos="0 0.06 0" quat="0.707107 0.707107 0 0" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
             <joint name="finger_base_to_upper_joint_0" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5708 1.5708" />
@@ -65,4 +65,16 @@
             </body>
         </body>
     </worldbody>
+
+    <actuator>
+      <motor joint="finger_base_to_upper_joint_0" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_0" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_0" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true" />
+      <motor joint="finger_base_to_upper_joint_120" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_120" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_120" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true" />
+      <motor joint="finger_base_to_upper_joint_240" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_240" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_240" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true"/>
+      </actuator>
 </mujoco>

@@ -1,0 +1,1 @@
+from trifinger_mujoco.envs.trifinger_env import TrifingerEnv
