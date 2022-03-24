@@ -4,5 +4,5 @@ from gym.envs.registration import register
 register(
     id="Trifinger-v0",
     entry_point="trifinger_mujoco.envs:TrifingerEnv",
-    max_episode_steps=50,
+    max_episode_steps=200,
 )
