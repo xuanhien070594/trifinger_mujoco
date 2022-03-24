@@ -67,14 +67,14 @@
     </worldbody>
 
     <actuator>
-      <motor joint="finger_base_to_upper_joint_0" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_0" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_0" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true" />
-      <motor joint="finger_base_to_upper_joint_120" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_120" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_120" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true" />
-      <motor joint="finger_base_to_upper_joint_240" ctrlrange="-1.5707963267948966 1.5707963267948966" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_240" ctrlrange="-1.3526301702956054 4.494222823885399" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_240" ctrlrange="-3.001966313430247 3.001966313430247" ctrllimited="true"/>
-      </actuator>
+      <motor joint="finger_base_to_upper_joint_0" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_0" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_0" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_base_to_upper_joint_120" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_120" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_120" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_base_to_upper_joint_240" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_upper_to_middle_joint_240" ctrlrange="-2 2" ctrllimited="true" />
+      <motor joint="finger_middle_to_lower_joint_240" ctrlrange="-2 2" ctrllimited="true"/>
+    </actuator>
 </mujoco>
