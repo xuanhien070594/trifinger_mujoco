@@ -8,4 +8,3 @@ if __name__ == "__main__":
     for i in range(100000):
         obs, reward, done, _ = env.step(np.zeros(9))
         env.render()
-        print(obs.shape)

@@ -3,22 +3,63 @@ from typing import Dict, Tuple, Any
 from os import path
 from gym import utils
 from gym.envs.mujoco import mujoco_env
+import trifinger_mujoco.utils as tf_utils
 
 
 class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
-    def __init__(self, use_contact_forces=False):
+    def __init__(self, env_configs: Dict[str, Any]):
         """Instantiate TrifingerEnv object.
 
         Args:
-          use_contact_forces: appending the net forces acting fingers and cube into observation data
+          env_configs: contains all necessary configurations for the environment
 
         """
-        self.use_contact_forces = use_contact_forces
         model_path = path.join(
             path.dirname(__file__), "../models/trifinger_with_cube.xml"
         )
+        # obtain config parameters
+        self.env_configs = env_configs
+
+        # need to set this attribute before instantiate MujocoEnv as it is needed for specify observation space
+        self.use_contact_forces = env_configs["use_contact_forces"]
+
         mujoco_env.MujocoEnv.__init__(self, model_path, 20)
         utils.EzPickle.__init__(self)
+
+        # initial positions and velocities for each finger
+        self.init_finger_pos = np.array(env_configs["init_finger_pos"])
+        self.init_finger_vel = np.array(env_configs["init_finger_vel"])
+
+        # initial positions, orienetations and velocities for the cube
+        self.init_cube_pos = np.array(env_configs["init_cube_pos"])
+        self.init_cube_vel = np.array(env_configs["init_cube_vel"])
+        self.init_cube_axis_angle = np.array(env_configs["init_cube_axis_angle"])
+        self.init_cube_quat = tf_utils.axis_angle.to_quaternion(
+            self.init_cube_axis_angle[:3], self.init_cube_axis_angle[-1]
+        )
+
+        # establish the initial system (trifinger + cube) conditions
+        self.init_qpos = np.concatenate(
+            [
+                self.init_cube_pos.ravel().copy(),
+                self.init_cube_quat.ravel().copy(),
+                np.tile(self.init_finger_pos.ravel().copy(), 3),
+            ]
+        )
+
+        self.init_qvel = np.concatenate(
+            [
+                self.init_cube_vel.ravel().copy(),
+                np.tile(self.init_finger_vel.ravel().copy(), 3),
+            ]
+        )
+
+        # target conditions
+        self.target_cube_pos = env_configs["target_cube_pos"]
+        self.target_cube_axis_angle = env_configs["target_cube_axis_angle"]
+        self.target_cube_quat = tf_utils.axis_angle.to_quaternion(
+            self.target_cube_axis_angle[:3], self.target_cube_axis_angle[-1]
+        )
 
     def step(
         self, action: np.ndarray
@@ -78,8 +119,7 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def reset_model(self) -> np.ndarray:
         """Set initial conditions for the environment."""
-
-        self.set_state(self.init_qpos, self.init_qvel)
+        self.set_state(self.init_qpos.copy(), self.init_qvel.copy())
         return self._get_obs()
 
     def viewer_setup(self) -> None:

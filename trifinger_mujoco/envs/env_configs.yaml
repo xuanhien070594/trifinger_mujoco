@@ -1,0 +1,15 @@
+# ====================== Parameters of Trifinger Environments =======================
+
+Trifinger-v0: &trifinger-defaults
+  use_contact_forces: False
+  init_finger_pos: [0.0, -1.0, -1.5] # initial joint positions for each finger
+  init_finger_vel: [0.0, 0.0, 0.0] # initial joint velocities for each finger
+  init_cube_pos: [0.0, 0.0, 0.025]
+  init_cube_axis_angle: [0.0, 0.0, 1.0, 0.0] # [axis vector, angle]
+  init_cube_vel: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+  target_cube_pos: [0.0, 0.0, 0.025]
+  target_cube_axis_angle: [0.0, 0.0, 1.0, 0.2]
+
+TrifingerForces-v0:
+  <<: *trifinger-defaults
+  use_contact_forces: True
