@@ -1,19 +1,27 @@
 import numpy as np
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Any
 from os import path
 from gym import utils
 from gym.envs.mujoco import mujoco_env
 
 
 class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
-    def __init__(self):
+    def __init__(self, use_contact_forces=False):
+        """Instantiate TrifingerEnv object.
+
+        Args:
+          use_contact_forces: appending contact forces into observation data
+
+        """
         model_path = path.join(
             path.dirname(__file__), "../models/trifinger_with_cube.xml"
         )
         mujoco_env.MujocoEnv.__init__(self, model_path, 20)
         utils.EzPickle.__init__(self)
 
-    def step(self, action: np.ndarray) -> Tuple:
+    def step(
+        self, action: np.ndarray
+    ) -> Tuple(np.ndarray, float, bool, Dict[Any, Any]):
         """Forward simulation.
 
         Args:
@@ -57,6 +65,7 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def reset_model(self) -> np.ndarray:
         """Set initial conditions for the environment."""
+
         self.set_state(self.init_qpos, self.init_qvel)
         return self._get_obs()
 
