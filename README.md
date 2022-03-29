@@ -38,5 +38,5 @@ env.close()
 
 ## Contributions
 
-- Mesh files of trifinger are obtained from [trifinger_simulation](https://github.com/open-dynamic-robot-initiative/trifinger_simulation)
-- Math utilities are based on package [baldor](https://github.com/crigroup/baldor) by Francisco Suárez Ruiz
+- STL files of trifinger are obtained from [trifinger_simulation](https://github.com/open-dynamic-robot-initiative/trifinger_simulation)
+- Math utility functions are based on package [baldor](https://github.com/crigroup/baldor) by Francisco Suárez Ruiz
