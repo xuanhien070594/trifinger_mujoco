@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Dict, Tuple
 from os import path
 from gym import utils
 from gym.envs.mujoco import mujoco_env
@@ -6,26 +7,47 @@ from gym.envs.mujoco import mujoco_env
 
 class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     def __init__(self):
-        model_path = path.join(path.dirname(__file__), "../models/trifinger_with_cube.xml")
-        mujoco_env.MujocoEnv.__init__(self, model_path, 5)
+        model_path = path.join(
+            path.dirname(__file__), "../models/trifinger_with_cube.xml"
+        )
+        mujoco_env.MujocoEnv.__init__(self, model_path, 20)
         utils.EzPickle.__init__(self)
 
-    def step(self, a):
-        self.do_simulation(a, self.frame_skip)
-        done = False
-        ob = self._get_obs()
-        reward = self._reward(ob, a, is_done=done)
-        return (
-            ob,
-            reward,
-            done,
-            {}
-        )
+    def step(self, action: np.ndarray) -> Tuple:
+        """Forward simulation.
 
-    def _reward(self, state, action, is_done=False):
+        Args:
+          action: Shape(9, ). Desired joint torque
+
+        """
+        self.do_simulation(action, self.frame_skip)
+        obs = self._get_obs()
+        done = self._is_done(obs)
+        reward = self._reward(obs, action, is_done=done)
+        return (obs, reward, done, {})
+
+    def _reward(self, state: np.ndarray, action: np.ndarray):
+        """Define reward function."""
         pass
 
-    def _get_obs(self):
+    def _is_done(self, state: np.ndarray) -> bool:
+        """Check if terminating conditions are met, given the current state."""
+        pass
+
+    def _get_obs(self) -> np.ndarray:
+        """Retrieve the current observation data from Mujoco.
+
+        Returns:
+
+          The total dimensions of observation space is 31, including:
+
+            - cube position: obs[:3]
+            - cube rotation: obs[3:7] (represented by quaternion)
+            - finger joints position: obs[7:16]
+            - cube velocity: obs[16:22]
+            - finger joints velocity: obs[22:31]
+
+        """
         return np.concatenate(
             [
                 self.sim.data.qpos.flat,
@@ -33,13 +55,11 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             ]
         )
 
-    def reset_model(self):
-        qpos = self.init_qpos + self.np_random.uniform(
-            size=self.model.nq, low=0.0, high=0.0
-        )
-        qvel = self.init_qvel
-        self.set_state(qpos, qvel)
+    def reset_model(self) -> np.ndarray:
+        """Set initial conditions for the environment."""
+        self.set_state(self.init_qpos, self.init_qvel)
         return self._get_obs()
 
-    def viewer_setup(self):
-        self.viewer.cam.distance = self.model.stat.extent * 1.0
+    def viewer_setup(self) -> None:
+        """Set up camera views here."""
+        pass
