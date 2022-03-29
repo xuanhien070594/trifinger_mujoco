@@ -6,19 +6,17 @@
         <mesh name="SIM__BL-Finger_Proximal" file="meshes/SIM__BL-Finger_Proximal.stl" />
         <mesh name="SIM__BL-Finger_Intermediate" file="meshes/SIM__BL-Finger_Intermediate.stl" />
         <mesh name="SIM_BL_FINGER_TIP_LINK" file="meshes/SIM_BL_FINGER_TIP_LINK.stl" />
-        <mesh name="trifinger_table_without_border" file="meshes/trifinger_table_without_border.stl" />
-        <mesh name="high_table_boundary" file="meshes/high_table_boundary.stl" />
     </asset>
     <worldbody>
-	<body name="cube" pos="0.0 0.0 0.05">
+	<body name="cube" pos="0.0 0.0 0.025">
 	  <inertial pos="0.0 0.0 0.0" mass="0.5" fullinertia="0.00020833333 0.00020833333 0.00020833333 0 0 0"/>
           <freejoint name="cube_table"/>
-          <geom name="cube_geom" type="box" size="0.025 0.025 0.025" quat="1 0 0 0" friction="0.5 0.005 0.0001" rgba="0.5 0.5 0 1.0"  /> 
+          <geom name="cube_geom" type="box" size="0.025 0.025 0.025" quat="1 0 0 0" friction="0.5 0.005 0.0001" rgba="0.5 0.5 0 1.0"/>
 	</body>
         <geom pos="0 0.219 0.29" type="mesh" rgba="0.6 0 0 1" mesh="SIM__BL-Finger_Base" />
         <geom pos="0.18966 -0.1095 0.29" quat="0.5 0 0 -0.866025" type="mesh" rgba="0 0.6 0 1" mesh="SIM__BL-Finger_Base" />
         <geom pos="-0.18966 -0.1095 0.29" quat="-0.5 0 0 -0.866025" type="mesh" rgba="0 0 0.6 1" mesh="SIM__BL-Finger_Base" />
-        <geom type="mesh" rgba="0.31 0.27 0.25 1" mesh="trifinger_table_without_border" friction="1.0 0.005 0.0001"/>
+        <geom type="box" rgba="0.31 0.27 0.25 1" size="0.5 0.5 0.01" friction="1.0 0.005 0.0001"/>
         <body name="finger_upper_link_0" pos="0 0.04 0.29">
             <inertial pos="0 0.06 0" quat="0.707107 0.707107 0 0" mass="0.2" diaginertia="0.000353333 0.000353333 5.33333e-05" />
             <joint name="finger_base_to_upper_joint_0" pos="0 0 0" axis="0 1 0" limited="true" range="-1.5708 1.5708" />
