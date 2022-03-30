@@ -385,3 +385,29 @@ def to_transform(quaternion):
             [0.0, 0.0, 0.0, 1.0],
         ]
     )
+
+
+def quat_error(q1, q2):
+    """
+    Returns the error between two quaternions using formulation in the paper
+    https://mathweb.ucsd.edu/~mleok/pdf/LeLeMc2010_quadrotor.pdf
+
+    Parameters
+    ----------
+    q1: array_like
+      First input quaternion (4 element sequence)
+    q2: array_like
+      Second input quaternion (4 element sequence)
+
+    Returns
+    -------
+    error: float
+
+    Notes
+    -----
+    Quaternions :math:`w + ix + jy + kz` are represented as :math:`[w, x, y, z]`.
+    """
+    R1 = tfu.quaternion.to_transform(q1)[:3, :3]
+    R2 = tfu.quaternion.to_transform(q2)[:3, :3]
+    error = np.trace(np.eye(3) - R1.T @ R2) / 2.0
+    return error
