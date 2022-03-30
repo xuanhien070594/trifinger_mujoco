@@ -20,12 +20,6 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         # obtain config parameters
         self.env_configs = env_configs
 
-        # need to set this attribute before instantiate MujocoEnv as it is needed for specify observation space
-        self.use_contact_forces = env_configs["use_contact_forces"]
-
-        mujoco_env.MujocoEnv.__init__(self, model_path, 20)
-        utils.EzPickle.__init__(self)
-
         # initial positions and velocities for each finger
         self.init_finger_pos = np.array(env_configs["init_finger_pos"])
         self.init_finger_vel = np.array(env_configs["init_finger_vel"])
@@ -38,7 +32,50 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             self.init_cube_axis_angle[:3], self.init_cube_axis_angle[-1]
         )
 
-        # establish the initial system (trifinger + cube) conditions
+        self.max_torque = env_configs["max_torque"]
+        self.use_contact_forces = env_configs["use_contact_forces"]
+        self.use_random_target = env_configs["use_random_target"]
+
+        # target positions and orienetations of the cube
+        if self.use_random_target:
+            self.random_target_cube_pos_low = np.array(
+                env_configs["random_target_cube_pos_low"]
+            )
+            self.random_target_cube_pos_high = np.array(
+                env_configs["random_target_cube_pos_high"]
+            )
+
+            self.target_cube_pos = np.random.uniform(
+                self.random_target_cube_pos_low, self.random_target_cube_pos_high
+            )
+
+            while (
+                abs(self.target_cube_pos[0]) < 0.05
+                or abs(self.target_cube_pos[1]) < 0.05
+            ):
+                self.target_cube_pos = np.random.uniform(
+                    self.random_target_cube_pos_low, self.random_target_cube_pos_high
+                )
+            self.target_cube_quat = tf_utils.quaternion.random()
+        else:
+            self.target_cube_pos = env_configs["target_cube_pos"]
+            self.target_cube_axis_angle = env_configs["target_cube_axis_angle"]
+            self.target_cube_quat = tf_utils.axis_angle.to_quaternion(
+                self.target_cube_axis_angle[:3], self.target_cube_axis_angle[-1]
+            )
+
+        self.init_cube_pos_error = np.linalg.norm(
+            self.target_cube_pos - self.init_cube_pos, ord=2
+        )
+
+        self.init_cube_quat_error = tf_utils.quaternion.quat_error(
+            self.target_cube_quat, self.init_cube_quat
+        )
+
+        mujoco_env.MujocoEnv.__init__(self, model_path, 20)
+        utils.EzPickle.__init__(self)
+
+        # override the initial system (trifinger + cube) conditions
         self.init_qpos = np.concatenate(
             [
                 self.init_cube_pos.ravel().copy(),
@@ -54,13 +91,6 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
             ]
         )
 
-        # target conditions
-        self.target_cube_pos = env_configs["target_cube_pos"]
-        self.target_cube_axis_angle = env_configs["target_cube_axis_angle"]
-        self.target_cube_quat = tf_utils.axis_angle.to_quaternion(
-            self.target_cube_axis_angle[:3], self.target_cube_axis_angle[-1]
-        )
-
     def step(
         self, action: np.ndarray
     ) -> Tuple[np.ndarray, float, bool, Dict[Any, Any]]:
@@ -70,6 +100,7 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
           action: Shape(9, ). Desired joint torque
 
         """
+        action = np.clip(action, -1, 1) * self.max_torque
         self.do_simulation(action, self.frame_skip)
         obs = self._get_obs()
         done = self._is_done(obs)
@@ -78,12 +109,22 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
 
     def _reward(self, state: np.ndarray, action: np.ndarray):
         """Define reward function."""
+        cur_cube_pos = state[:3]
+        cur_cube_quat = state[3:7]
 
-        pass
+        return (
+            2
+            - np.linalg.norm(cur_cube_pos - self.target_cube_pos, ord=2)
+            / self.init_cube_pos_error
+            - tf_utils.quaternion.quat_error(self.target_cube_quat, cur_cube_quat)
+            / self.init_cube_quat_error
+        ) / 2.0
 
     def _is_done(self, state: np.ndarray) -> bool:
         """Check if terminating conditions are met, given the current state."""
-        pass
+        if np.linalg.norm(state[:3] - self.target_cube_pos, ord=2) < 0.002:
+            return True
+        return False
 
     def _get_obs(self) -> np.ndarray:
         """Retrieve the current observation data from Mujoco.
@@ -120,6 +161,12 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
     def reset_model(self) -> np.ndarray:
         """Set initial conditions for the environment."""
         self.set_state(self.init_qpos.copy(), self.init_qvel.copy())
+
+        # set target positions and orienetations (visualization only)
+        target_id = self.sim.model.geom_name2id("target")
+        self.sim.model.geom_pos[target_id] = self.target_cube_pos
+        self.sim.model.geom_quat[target_id] = self.target_cube_quat
+
         return self._get_obs()
 
     def viewer_setup(self) -> None:
@@ -158,3 +205,6 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         """
         cube_id = self.sim.model.body_name2id("cube")
         return self.sim.data.cfrc_ext[cube_id][3:]
+
+    def render_target(self):
+        """Function call to render the target."""
