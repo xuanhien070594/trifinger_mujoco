@@ -67,14 +67,14 @@
     </worldbody>
 
     <actuator>
-      <motor joint="finger_base_to_upper_joint_0" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_0" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_0" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_base_to_upper_joint_120" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_120" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_120" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_base_to_upper_joint_240" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_upper_to_middle_joint_240" ctrlrange="-0.3 0.3" ctrllimited="true" />
-      <motor joint="finger_middle_to_lower_joint_240" ctrlrange="-0.3 0.3" ctrllimited="true"/>
+      <position joint="finger_base_to_upper_joint_0"     kp="2" ctrlrange="-1.5708 1.5708" ctrllimited="true" />
+      <position joint="finger_upper_to_middle_joint_0"   kp="2" ctrlrange="-1.35263 4.49422" ctrllimited="true" />
+      <position joint="finger_middle_to_lower_joint_0"   kp="2" ctrlrange="-3.00197 3.00197" ctrllimited="true" />
+      <position joint="finger_base_to_upper_joint_120"   kp="2" ctrlrange="-1.5708 1.5708" ctrllimited="true" />
+      <position joint="finger_upper_to_middle_joint_120" kp="2" ctrlrange="-1.35263 4.49422" ctrllimited="true" />
+      <position joint="finger_middle_to_lower_joint_120" kp="2" ctrlrange="-3.00197 3.00197" ctrllimited="true" />
+      <position joint="finger_base_to_upper_joint_240"   kp="2" ctrlrange="-1.5708 1.5708" ctrllimited="true" />
+      <position joint="finger_upper_to_middle_joint_240" kp="2" ctrlrange="-1.35263 4.49422" ctrllimited="true" />
+      <position joint="finger_middle_to_lower_joint_240" kp="2" ctrlrange="-3.00197 3.00197" ctrllimited="true"/>
     </actuator>
 </mujoco>
