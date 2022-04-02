@@ -1,6 +1,8 @@
 # trifinger-mujoco
 An gym-like environment consists of trifinger robot and a cube
 
+![Screenshots of different (Tri)Finger robots in simulation](docs/images/trifinger.jpg)
+
 ## Installation
 
 ### Mujuco installation
