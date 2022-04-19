@@ -81,9 +81,13 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
           action: Shape(9, ). Desired joint torque
 
         """
-        action = np.clip(action, -1, 1) * self.max_delta_position
-        desired_joint_position = action + self.sim.data.qpos[7:16]
-        self.do_simulation(desired_joint_position, self.frame_skip)
+        if self.controller_type == "position":
+            action = np.clip(action, -1, 1) * self.max_delta_position
+            desired_joint_position = action + self.sim.data.qpos[7:16]
+            self.do_simulation(desired_joint_position, self.frame_skip)
+        elif self.controller_type == "torque":
+            action = np.clip(action, -1, 1)
+            self.do_simulation(action, self.frame_skip)
         obs = self._get_obs()
         done = self._is_done(obs)
         reward = self._reward(obs, action)
