@@ -11,6 +11,9 @@ An gym-like environment consists of trifinger robot and a cube
 - Step 2: Unzip and copy folder `mujoco210` to under folder `~/.mujoco/` (create this folder if it doesn't exist)
 - Step 3: Add this line `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/{your_user_name}/.mujoco/mujoco210/bin` to your `~/.bashrc` or `~/.zshrc` file
 
+### Mujoco test
+To ensure Mujoco is installed properly, run the command `./mujoco/mujoco210/bin/simulate {path_to_this_repo}/trifinger_mujoco/models/trifinger_with_cube_torque_ctrl.xml`
+
 ### Trifinger-mujoco installation
 To install, under the package's folder, run `pip install -e .`. It will install all necessary packages.
 
