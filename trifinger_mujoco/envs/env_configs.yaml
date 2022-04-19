@@ -1,8 +1,9 @@
 # ====================== Parameters of Trifinger Environments =======================
 
 Trifinger-v0: &trifinger-defaults
-  robot_type: "pro"
-  controller_type: "position"
+  robot_type: "edu"
+  controller_type: "torque"
+  frame_skip: 5
   init_finger_pos: [0.0, -1.0, -1.5] # initial joint positions for each finger
   init_finger_vel: [0.0, 0.0, 0.0] # initial joint velocities for each finger
   init_cube_pos: [0.0, 0.0, 0.025]

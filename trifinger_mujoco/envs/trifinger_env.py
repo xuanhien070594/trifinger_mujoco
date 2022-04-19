@@ -29,6 +29,7 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         # obtain config parameters
         self.env_configs = env_configs
 
+        self.frame_skip = self.env_configs["frame_skip"]
         self.robot_type = self.env_configs["robot_type"]
         self.controller_type = self.env_configs["controller_type"]
         self.model_name = XML_LIBRARY[self.robot_type][self.controller_type]
@@ -52,7 +53,7 @@ class TrifingerEnv(mujoco_env.MujocoEnv, utils.EzPickle):
         self._sample_target()
 
         model_path = path.join(path.dirname(__file__), f"../models/{self.model_name}")
-        mujoco_env.MujocoEnv.__init__(self, model_path, 20)
+        mujoco_env.MujocoEnv.__init__(self, model_path, self.frame_skip)
         utils.EzPickle.__init__(self)
 
         # override the initial system (trifinger + cube) conditions
