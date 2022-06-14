@@ -42,7 +42,7 @@ for _ in range(1000):
 env.close()
 ```
 
-## Contributions
+## Attribution notes
 
 - STL files of trifinger are obtained from [trifinger_simulation](https://github.com/open-dynamic-robot-initiative/trifinger_simulation)
 - Math utility functions are based on package [baldor](https://github.com/crigroup/baldor) by Francisco Suárez Ruiz
