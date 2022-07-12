@@ -10,6 +10,7 @@ An gym-like environment consists of trifinger robot and a cube
 - Step 1: Download Mujoco 2.10 from this [link](https://github.com/deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz)
 - Step 2: Unzip and copy folder `mujoco210` to under folder `~/.mujoco/` (create this folder if it doesn't exist)
 - Step 3: Add this line `export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/{your_user_name}/.mujoco/mujoco210/bin` to your `~/.bashrc` or `~/.zshrc` file
+- Step 4: Source your `~/.bashrc` or `~/.zshrc` file
 
 ### Mujoco test
 To ensure Mujoco is installed properly, run the following command 
